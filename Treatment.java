@@ -1,3 +1,4 @@
+
 public class Treatment {
     private String name;
     private double price; 
@@ -27,3 +28,4 @@ public class Treatment {
         return Math.round((total + tax) * 100.0) / 100.0; 
     }
 }
+

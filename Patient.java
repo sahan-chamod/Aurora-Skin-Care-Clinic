@@ -1,3 +1,4 @@
+
 public class Patient {
     private String nic;
     private String name;
@@ -19,4 +20,4 @@ public class Patient {
         return nic;
     }
 }
- 
+

@@ -63,72 +63,77 @@ public class Main {
     }
 
     private static void makeAppointment(Scanner scanner, Clinic clinic) {
-        System.out.print("Enter NIC: ");
-        String nic = scanner.nextLine();
-        System.out.print("Enter Name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter Phone Number: ");
-        String phoneNumber = scanner.nextLine();
+        try {
+            System.out.print("Enter NIC: ");
+            String nic = scanner.nextLine();
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Email: ");
+            String email = scanner.nextLine();
+            System.out.print("Enter Phone Number: ");
+            String phoneNumber = scanner.nextLine();
 
-        Patient patient = new Patient(nic, name, email, phoneNumber);
+            Patient patient = new Patient(nic, name, email, phoneNumber);
 
-        // Choose dermatologist
-        System.out.print("Choose Dermatologist (1: Dr. Smith, 2: Dr. Jones): ");
-        int docChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        Dermatologist dermatologist = clinic.getDermatologists().get(docChoice - 1);
+            // Choose dermatologist
+            System.out.print("Choose Dermatologist (1: Dr. Smith, 2: Dr. Jones): ");
+            int docChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            Dermatologist dermatologist = clinic.getDermatologists().get(docChoice - 1);
 
-        // Choose treatment
-        System.out.println("Available Treatments:");
-        List<Treatment> treatments = clinic.getTreatments();
-        for (int i = 0; i < treatments.size(); i++) {
-            System.out.println((i + 1) + ". " + treatments.get(i).getName());
-        }
-        System.out.print("Choose Treatment: ");
-        int treatChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        Treatment treatment = treatments.get(treatChoice - 1);
+            // Choose treatment
+            System.out.println("Available Treatments:");
+            List<Treatment> treatments = clinic.getTreatments();
+            for (int i = 0; i < treatments.size(); i++) {
+                System.out.println((i + 1) + ". " + treatments.get(i).getName());
+            }
+            System.out.print("Choose Treatment: ");
+            int treatChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            Treatment treatment = treatments.get(treatChoice - 1);
 
-        // Choose appointment day
-        System.out.println("Available Days:");
-        List<String> availableDays = clinic.getAvailableDays();
-        for (int i = 0; i < availableDays.size(); i++) {
-            System.out.println((i + 1) + ". " + availableDays.get(i));
-        }
-        System.out.print("Choose Appointment Day: ");
-        int dayChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        String day = availableDays.get(dayChoice - 1);
+            // Choose appointment day
+            System.out.println("Available Days:");
+            List<String> availableDays = clinic.getAvailableDays();
+            for (int i = 0; i < availableDays.size(); i++) {
+                System.out.println((i + 1) + ". " + availableDays.get(i));
+            }
+            System.out.print("Choose Appointment Day: ");
+            int dayChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            String day = availableDays.get(dayChoice - 1);
 
-        // Choose appointment time
-        System.out.println("Available Times for " + day + ":");
-        List<String> availableTimes = dermatologist.getSchedule().get(day);
-        for (int i = 0; i < availableTimes.size(); i++) {
-            System.out.println((i + 1) + ". " + availableTimes.get(i));
-        }
-        System.out.print("Choose Appointment Time: ");
-        int timeChoice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
-        String time = availableTimes.get(timeChoice - 1);
+            // Choose appointment time
+            System.out.println("Available Times for " + day + ":");
+            List<String> availableTimes = dermatologist.getSchedule().get(day);
+            for (int i = 0; i < availableTimes.size(); i++) {
+                System.out.println((i + 1) + ". " + availableTimes.get(i));
+            }
+            System.out.print("Choose Appointment Time: ");
+            int timeChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+            String time = availableTimes.get(timeChoice - 1);
 
-        // Check if the time slot is available
-        if (dermatologist.isTimeSlotAvailable(day, time)) {
-            // Make the appointment
-            clinic.makeAppointment(patient, day, time, dermatologist, treatment);
+            // Check if the time slot is available
+            if (dermatologist.isTimeSlotAvailable(day, time)) {
+                // Make the appointment
+                clinic.makeAppointment(patient, day, time, dermatologist, treatment);
 
-            // Generate invoice
-            double totalCost = treatment.calculateTotalWithTax();
-            Invoice invoice = new Invoice(patient, treatment, treatment.getRegistrationFee(), treatment.getPrice(), totalCost);
-            allInvoices.add(invoice); // Add to the list of invoices
-            System.out.println("Appointment confirmed. Invoice generated.");
-            invoice.printInvoice(); // Print the invoice immediately
+                // Generate invoice
+                double totalCost = treatment.calculateTotalWithTax();
+                Invoice invoice = new Invoice(patient, treatment, treatment.getRegistrationFee(), treatment.getPrice(), totalCost);
+                allInvoices.add(invoice); // Add to the list of invoices
+                System.out.println("Appointment confirmed. Invoice generated.");
+                invoice.printInvoice(); // Print the invoice immediately
 
-            // Book the time slot
-            dermatologist.bookTimeSlot(day, time); // Mark the time slot as booked
-        } else {
-            System.out.println("The selected time slot is already booked. Please choose another time.");
+                // Book the time slot
+                dermatologist.bookTimeSlot(day, time); // Mark the time slot as booked
+            } else {
+                System.out.println("The selected time slot is already booked. Please choose another time.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please ensure you're entering a valid number.");
+            scanner.nextLine(); // Clear the buffer
         }
     }
 

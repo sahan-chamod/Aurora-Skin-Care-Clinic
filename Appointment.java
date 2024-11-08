@@ -1,3 +1,4 @@
+
 public class Appointment {
     private String appointmentId;
     private String day;
@@ -24,3 +25,4 @@ public class Appointment {
                 appointmentId, day, time, patient.getName(), dermatologist.getName(), treatment.getName(), treatment.calculateTotalWithTax());
     }
 }
+
