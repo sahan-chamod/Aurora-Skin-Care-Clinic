@@ -1,0 +1,1 @@
+"This application streamlines the appointment booking and invoicing process for Aurora Skin Care clinic. It offers a user-friendly interface for managing patient appointments, generating invoices, and tracking financial information" 
